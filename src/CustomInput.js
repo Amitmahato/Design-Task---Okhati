@@ -58,6 +58,8 @@ export default class CustomInput extends Component {
           this.setState({ focused: true });
           console.log("Focused");
         }}
+        // using onBlur is creating some bug so intentionally using an invalid event handler just to
+        // avoid its invocation but leave the actual code that can do the task of mine though not working
         onDeselect={() => {
           this.setState({ focused: false });
           console.log("Defocused");
