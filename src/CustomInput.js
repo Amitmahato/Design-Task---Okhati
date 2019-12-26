@@ -11,6 +11,9 @@ export default class CustomInput extends Component {
   state = {
     focused: false,
     inputVal: "",
+    CheckCircleColor: "rgba(0,0,0,0.5)",
+    CheckCircleOpacity: 0,
+    CancelIconColor: "rgba(0,0,0,0.5)",
     history: [
       "Default Text One",
       "Longer Default Text One",
@@ -40,7 +43,9 @@ export default class CustomInput extends Component {
 
   handleInputChange = e => {
     const { value } = e.target;
-    this.setState({ inputVal: value });
+    if (value.length > 0)
+      this.setState({ inputVal: value, CheckCircleOpacity: 1 });
+    else this.setState({ inputVal: value });
   };
   render() {
     return (
@@ -79,10 +84,11 @@ export default class CustomInput extends Component {
               ? this.state.selected.map((item, index) => (
                   <Button
                     style={{
+                      fontSize: 18,
                       borderStyle: "solid",
-                      borderWidth: 1,
+                      borderWidth: 2,
                       borderColor: "green",
-                      borderRadius: 40,
+                      borderRadius: 20,
                       margin: 10,
                       padding: 10,
                       color: "black",
@@ -139,26 +145,30 @@ export default class CustomInput extends Component {
                 value={this.state.inputVal}
                 onChange={e => this.handleInputChange(e)}
               />
-              {this.state.inputVal.length > 0 ? (
-                <Button>
-                  <CheckCircleIcon
-                    fontSize="large"
-                    style={{
-                      color: "rgba(0,0,0,0.5)",
-                      marginRight: 15
-                    }}
-                    onClick={() => {
-                      const { inputVal, history } = this.state;
-                      this.setState({
-                        history: [...history, inputVal],
-                        inputVal: ""
-                      });
-                    }}
-                  />
-                </Button>
-              ) : (
-                ""
-              )}
+              <CheckCircleIcon
+                fontSize="large"
+                style={{
+                  color: this.state.CheckCircleColor,
+                  marginRight: 15,
+                  opacity: this.state.CheckCircleOpacity
+                }}
+                onClick={() => {
+                  const { inputVal, selected } = this.state;
+                  this.setState({
+                    selected: [...selected, inputVal],
+                    inputVal: "",
+                    CheckCircleOpacity: 0
+                  });
+                }}
+                onMouseEnter={() =>
+                  this.setState({ CheckCircleColor: "green" })
+                }
+                onMouseLeave={() =>
+                  this.setState({
+                    CheckCircleColor: "rgba(0,0,0,0.5)"
+                  })
+                }
+              />
             </div>
             {!this.state.focused ? (
               <KeyboardArrowDownIcon
@@ -172,8 +182,17 @@ export default class CustomInput extends Component {
               <CancelIcon
                 fontSize="large"
                 style={{
-                  color: "rgba(0,0,0,0.3)",
+                  color: this.state.CancelIconColor,
                   margin: "auto"
+                }}
+                onClick={() => {
+                  this.setState({ inputVal: "", CheckCircleOpacity: 0 });
+                }}
+                onMouseLeave={() => {
+                  this.setState({ CancelIconColor: "rgba(0,0,0,0.3)" });
+                }}
+                onMouseEnter={() => {
+                  this.setState({ CancelIconColor: "rgba(0,0,0,0.8)" });
                 }}
               />
             )}

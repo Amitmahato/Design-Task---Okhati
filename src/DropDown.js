@@ -21,8 +21,9 @@ export default class DropDown extends Component {
         {this.props.history.map((item, index) => (
           <Button
             style={{
+              fontSize: 18,
               backgroundColor: "rgba(100,150,255,0.4)",
-              borderRadius: 40,
+              borderRadius: 20,
               margin: 10,
               padding: 10,
               color: "black",
